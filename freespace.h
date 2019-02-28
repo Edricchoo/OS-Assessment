@@ -36,14 +36,36 @@ typedef struct dataNo {
 } DataNo;
 
 // Free-space Management ==================================================================
-typedef struct freeSpaceEntries {
+typedef struct freeSpaceDirectory {
+	int status; // 1: Full, 0: Available
+} FreeSpaceDirectory;
+
+typedef struct freeSpaceDirectoryNo{
+	FreeSpaceDirectory freeSpaceDirectory[NUM_DIR]; // number of directory block to check free space
+} FreeSpaceDirectoryNo;
+
+typedef struct freeSpaceData {
+	int status; // 1: Full, 0: Available
+} FreeSpaceData;
+
+typedef struct freeSpaceDataNo{
+	FreeSpaceData freeSpaceData[NUM_DATA]; // number of data block to check free space
+} FreeSpaceDataNo;
+
+// method calling
+int directoryCheck (Directory dir, FreeSpaceDirectoryNo fsDirNo);
+int freeSpaceCheck (FreeSpaceDataNo fsDataNo);
+int contiguousCheck (int num_of_block, FreeSpaceDataNo fsData);
+void startUp (Directory *dir, Data *data, FreeSpaceDirectoryNo *fsDirNo, FreeSpaceDataNo *fsDataNo);
+void displayBlockInfo(Directory dir, Data data);
+
+
+/*
+typedef struct freeSpaceDirectoryEntries {
 	int status; // 1: allocated, 0: empty
-} FreeSpaceEntries;
+} FreeSpaceDirectoryEntries;
 
-typedef struct freeSpace {
-	FreeSpaceEntries freeSpaceEntries[(NUM_DATA + NUM_DIR) * NUM_ENTRIES]; // Total size of Hard Disk System
-} FreeSpace;
-
-// Method calling
-void startup();
-void display_block_info();
+typedef struct freeSpaceDataEntries {
+	int status; // 1: allocated, 0: empty
+} FreeSpaceDataEntries;
+*/
