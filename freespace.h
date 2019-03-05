@@ -1,3 +1,4 @@
+#pragma once
 #define NUM_DIR 1 // define number of directory block
 #define NUM_DATA 31 // define number of data block
 #define NUM_ENTRIES 4 // define entries in a block
@@ -36,16 +37,24 @@ typedef struct dataNo {
 } DataNo;
 
 // Free-space Management ==================================================================
-typedef struct freeSpaceDirectory {
+typedef struct freeSpaceDirectoryEntries {
 	int status; // 1: Full, 0: Available
+} FreeSpaceDirectoryEntries;
+
+typedef struct freeSpaceDirectory{
+	FreeSpaceDirectoryEntries freeSpaceDirectoryEntries[NUM_ENTRIES];
 } FreeSpaceDirectory;
 
 typedef struct freeSpaceDirectoryNo{
 	FreeSpaceDirectory freeSpaceDirectory[NUM_DIR]; // number of directory block to check free space
 } FreeSpaceDirectoryNo;
 
-typedef struct freeSpaceData {
+typedef struct freeSpaceDataEntries {
 	int status; // 1: Full, 0: Available
+} FreeSpaceDataEntries;
+
+typedef struct freeSpaceData {
+	FreeSpaceDataEntries freeSpaceDataEntries[NUM_ENTRIES];
 } FreeSpaceData;
 
 typedef struct freeSpaceDataNo{
@@ -53,12 +62,11 @@ typedef struct freeSpaceDataNo{
 } FreeSpaceDataNo;
 
 // method calling
-int directoryCheck (Directory dir, FreeSpaceDirectoryNo fsDirNo);
-int freeSpaceCheck (FreeSpaceDataNo fsDataNo);
-int contiguousCheck (int num_of_block, FreeSpaceDataNo fsData);
-void startUp (Directory *dir, Data *data, FreeSpaceDirectoryNo *fsDirNo, FreeSpaceDataNo *fsDataNo);
-void displayBlockInfo(Directory dir, Data data);
-
+int directoryCheck (FreeSpaceDirectoryNo *fsDirNo);
+int freeSpaceCheck (FreeSpaceDataNo *fsDataNo);
+int contiguousCheck (int num_of_block, FreeSpaceDataNo *fsData);
+void startUp (/*Directory*/DirectoryNo *dir, /*Data*/DataNo *data, FreeSpaceDirectoryNo *fsDirNo, FreeSpaceDataNo *fsDataNo);
+void displayBlockInfo(DirectoryNo *dir, DataNo *data, FreeSpaceDirectoryNo *fsDirNo, FreeSpaceDataNo *fsDataNo);
 
 /*
 typedef struct freeSpaceDirectoryEntries {
