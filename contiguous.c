@@ -9,14 +9,16 @@ void addContiguous(char *tempLine, DirectoryNo *dir, DataNo *data, FreeSpaceDire
     
     int directoryCounter = -1;
     int i,j;
+
+    /* LOOP THROUGH EACH DIRECTORY BLOCK*/
     for (i = 0; i < NUM_DIR; i++){
+        /* LOOP THROUGH ENTRIES IN THE BLOCK */
         for (j = 0; j < NUM_ENTRIES; j++) {
             if(dir->directory[i].directoryEntries[j].fileID == -1) {
                 directoryCounter = j;
                 break;
             }
         }
-    
     }
     
     if (directoryCounter == -1) {
@@ -29,7 +31,7 @@ void addContiguous(char *tempLine, DirectoryNo *dir, DataNo *data, FreeSpaceDire
 
         token = strtok(NULL, separator);
         dir->directory[0].directoryEntries[directoryCounter].fileID = atoi(token); // assign fileID to directory
-        fsDirNo->freeSpaceDirectory[directoryCounter].freeSpaceDirectoryEntries[/*TBF: j*/0].status = 1;
+        fsDirNo->freeSpaceDirectory[0].freeSpaceDirectoryEntries[directoryCounter].status = 1;
 
         int file_size = 0;
         int content[1024];
@@ -40,27 +42,20 @@ void addContiguous(char *tempLine, DirectoryNo *dir, DataNo *data, FreeSpaceDire
             token = strtok(NULL, separator);
         }
         int numBlocks = ceil((double)file_size/NUM_ENTRIES); // get ceiling to know number of blocks needed
-        
         int startBlock = contiguousCheck (numBlocks, fsDataNo);
+        printf("STARTING BLOCK :     %d\n", startBlock);
 
         dir->directory[0].directoryEntries[directoryCounter].start = startBlock;
         
         int endBlock = startBlock + numBlocks - 1;
         dir->directory[0].directoryEntries[directoryCounter].end = endBlock;
-        
-        /*
-        //printf("%d\n", endBlock);
-        
-        for (i = 0; i < endBlock; i++){
-            for (j = 0; j < NUM_ENTRIES; j++){
-                data->dataEntries[i].status = 1;
-                printf("%s\n",data->dataEntries[i].status);
-            }
+
+        j = 0;
+        for (i = 0; i < file_size; i++){
+            data->data[startBlock + i/4].dataEntries[i%4].entry = content[i];
         }
-            */
-        
-        
-        //displayBlockInfo(dir, data);
+
+        displayBlockInfo(dir, data, fsDirNo, fsDataNo);
     }
     /*
     int numBlocks = ceil(i/NUM_ENTRIES); // get ceiling to know number of blocks needed

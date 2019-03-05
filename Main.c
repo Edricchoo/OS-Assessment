@@ -18,8 +18,14 @@ int main() {
 	char *token;
 
 	int i;
+
 	for (i = 0 ; i < 3 ; i++) {
 		startUp(&dir, &data, &fsDirNo, &fsDataNo);// initialize all block to empty
+
+		fsDataNo.freeSpaceData[0].freeSpaceDataEntries[0].status = 1;
+		fsDataNo.freeSpaceData[1].freeSpaceDataEntries[0].status = 1;
+		fsDataNo.freeSpaceData[2].freeSpaceDataEntries[0].status = 1;
+		fsDataNo.freeSpaceData[4].freeSpaceDataEntries[0].status = 1;
 
 		//displayBlockInfo(&dir, &data, &fsDirNo, &fsDataNo); // display block information
 
@@ -37,9 +43,9 @@ int main() {
 				// index add allocation
 				if (i == 0) {
 					// log start timestamp
-					addIndex(tempLine, &dir, &data, &fsDirNo, &fsDataNo);
+//					addIndex(tempLine, &dir, &data, &fsDirNo, &fsDataNo);
 					// log end timestamp
-					displayBlockInfo(&dir, &data, &fsDirNo, &fsDataNo); // display block information
+//					displayBlockInfo(&dir, &data, &fsDirNo, &fsDataNo); // display block information
 				}
 
 				// linked add allocation
@@ -50,7 +56,7 @@ int main() {
 				// contiguous add allocation
 				if (i == 2) {
 					addContiguous(tempLine, &dir, &data, &fsDirNo, &fsDataNo);
-					//displayBlockInfo(dir, data); // display block information
+					displayBlockInfo(&dir, &data, &fsDirNo, &fsDataNo); // display block information
 				}
 			}
 			
@@ -58,7 +64,7 @@ int main() {
 			else if (strcmp(token, "read") == 0) {
 				
 				if (i == 0) {
-					readIndex(tempLine, &dir, &data, &fsDirNo, &fsDataNo);
+//					readIndex(tempLine, &dir, &data, &fsDirNo, &fsDataNo);
 					//displayBlockInfo(dir, data); // display block information
 				}
 
@@ -76,7 +82,7 @@ int main() {
 
 				// index delete allocation
 				if (i == 0) {
-					deleteIndex(tempLine, &dir, &data, &fsDirNo, &fsDataNo);
+//					deleteIndex(tempLine, &dir, &data, &fsDirNo, &fsDataNo);
 					//displayBlockInfo(dir, data); // display block information
 				}
 

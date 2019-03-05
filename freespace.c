@@ -32,21 +32,22 @@ int freeSpaceCheck (FreeSpaceDataNo *fsDataNo) {
 }
 
 int contiguousCheck (int num_of_block, FreeSpaceDataNo *fsDataNo) {
-    int i,j;
+    int i,j,count=0;
 
 	// loop thru all data blocks
-    for (i = 0; i < NUM_DATA; i++) {
-
-		// loop through and find consecutive
-        for (j = 0; j < num_of_block; j++) {
-            if (fsDataNo->freeSpaceData[i].freeSpaceDataEntries[i+j].status == 1) {
-                break;
-            }
-        }
-		// if the next amount of num_of_block is valid, return starting from which block to get the consecutive num_of_block
-        if (j == num_of_block) {
-            return i+j;
-        }
+    for (i = 0; i < NUM_DATA; i++)
+    {
+    	for (j = 0; j < num_of_block; j++)
+		{
+    		if (fsDataNo->freeSpaceData[i + j].freeSpaceDataEntries[0].status == 1)
+			{
+    			break;
+			}
+			else if (j == (num_of_block - 1))
+			{
+				return i;
+			}
+		}
     }
     return -1; // not enough space
 }
